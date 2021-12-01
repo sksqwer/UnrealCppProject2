@@ -27,9 +27,12 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCOptionComponent* Option;	
+
 private:
 	void OnMoveForward(float InAxis);
 	void OnMoveRight(float InAxis);
-	void OnHorizonLook(float InAxis);
+	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
 };
