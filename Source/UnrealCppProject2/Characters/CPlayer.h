@@ -1,8 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Component/CStateComponent.h"
 #include "GameFramework/Character.h"
 #include "CPlayer.generated.h"
+
 
 UCLASS()
 class UNREALCPPPROJECT2_API ACPlayer : public ACharacter
@@ -28,11 +30,33 @@ private:
 		class UCameraComponent* Camera;
 
 	UPROPERTY(VisibleDefaultsOnly)
-		class UCOptionComponent* Option;	
+		class UCOptionComponent* Option;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCStatusComponent* Status;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCStateComponent* State;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCMontagesComponent* Montages;
+
+private:
+	UFUNCTION()
+		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
 
 private:
 	void OnMoveForward(float InAxis);
 	void OnMoveRight(float InAxis);
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
+
+	void OnAvoid();
+
+	void Begin_Roll();
+	void Begin_Backstep();
+public:
+	void End_Roll();
+	void End_Backstep();
+
 };

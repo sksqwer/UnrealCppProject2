@@ -6,6 +6,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "Component/COptionComponent.h"
+#include "Component/CStatusComponent.h"
+#include "Component/CMontagesComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -14,8 +16,12 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 	CHelpers::CreateActorComponent<UCOptionComponent>(this, &Option, "Option");
+	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
+	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
+	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
 
 	bUseControllerRotationYaw = false;
+
 
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
@@ -42,6 +48,8 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
+
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -58,11 +66,24 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalLook", this, &ACPlayer::OnVerticalLook);
+	PlayerInputComponent->BindAction("Avoid", EInputEvent::IE_Pressed, this, &ACPlayer::OnAvoid);
+
+}
+
+void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+{
+	switch(InNewType)
+	{
+	case EStateType::Roll:		Begin_Roll(); break;
+	case EStateType::Backstep:	Begin_Backstep(); break;
+	}
 
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
 {
+	CheckFalse(Status->CanMove());
+
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector();
 	AddMovementInput(direction, InAxis);
@@ -70,6 +91,8 @@ void ACPlayer::OnMoveForward(float InAxis)
 
 void ACPlayer::OnMoveRight(float InAxis)
 {
+	CheckFalse(Status->CanMove());
+
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetRightVector();
 	AddMovementInput(direction, InAxis);
@@ -85,5 +108,39 @@ void ACPlayer::OnVerticalLook(float InAxis)
 {
 	float rate = Option->GetVerticalLookRate();
 	AddControllerPitchInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
+}
+
+void ACPlayer::OnAvoid()
+{
+	CheckFalse(Status->CanMove());
+	CheckFalse(State->IsIdleMode());
+
+	if (InputComponent->GetAxisValue("MoveForward") < 0.0f)
+	{
+		State->SetBackStepMode();
+		return;
+	}
+
+	State->SetRollMode();
+}
+
+void ACPlayer::Begin_Roll()
+{
+
+}
+
+void ACPlayer::Begin_Backstep()
+{
+
+}
+
+void ACPlayer::End_Roll()
+{
+
+}
+
+void ACPlayer::End_Backstep()
+{
+
 }
 
