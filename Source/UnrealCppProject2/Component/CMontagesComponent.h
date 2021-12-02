@@ -7,7 +7,7 @@
 #include "CMontagesComponent.generated.h"
 
 USTRUCT(BlueprintType)
-struct FMontageDate : public FTableRowBase
+struct FMontageData : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -39,8 +39,4 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 		UDataTable* DataTable;
-
-
-
-
 };
