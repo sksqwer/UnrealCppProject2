@@ -39,4 +39,14 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 		UDataTable* DataTable;
+
+private:
+	FMontageData* Datas[(int32)EStateType::Max];
+
+private:
+	void PlayAnimMontage(EStateType InState);
+
+public:
+	void PlayRoll();
+	void PlayBackstep();
 };
