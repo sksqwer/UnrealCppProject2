@@ -51,4 +51,12 @@ public:
 	void SetUnarmedMode();
 	void SetOneHandMode();
 	void SetTwoHandMode();
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
+		class UCActionData* Datas[(int32)EActionType::Max];
+
+public:
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE class UCActionData* GetCurrent() { return Datas[(int32)Type]; }
 };

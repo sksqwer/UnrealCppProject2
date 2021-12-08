@@ -12,6 +12,7 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 	Equipment->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 	Equipment->SetData(EquipmentData);
 
-	UGameplayStatics::FinishSpawningActor(Equipment, transform);
+	UGameplayStatics::FinishSpawningActor(Equipment, transform); 
+	
 	
 }

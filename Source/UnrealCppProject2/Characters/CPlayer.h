@@ -12,7 +12,7 @@ class UNREALCPPPROJECT2_API ACPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
-	ACPlayer();
+	ACPlayer(); 
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,6 +39,9 @@ private:
 		class UCStateComponent* State;
 
 	UPROPERTY(VisibleDefaultsOnly)
+		class UCActionComponent* Action;
+
+	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontagesComponent* Montages;
 
 private:
@@ -58,5 +61,8 @@ private:
 public:
 	void End_Roll();
 	void End_Backstep();
+
+private:
+	void OnOneHand();
 
 };

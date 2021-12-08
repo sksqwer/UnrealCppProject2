@@ -28,6 +28,7 @@ class UNREALCPPPROJECT2_API UCActionData : public UDataAsset
 private:
 	class ACEquipment* Equipment;
 
+public:
 	void BeginPlay(class ACharacter* InOwnerCharacter);
 
 public:
@@ -36,5 +37,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FEquipmentData EquipmentData;
+
+public:
+	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
 	
 };

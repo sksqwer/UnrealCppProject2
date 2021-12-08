@@ -8,6 +8,7 @@
 #include "Component/COptionComponent.h"
 #include "Component/CStatusComponent.h"
 #include "Component/CMontagesComponent.h"
+#include "Component/CActionComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -19,6 +20,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
+	CHelpers::CreateActorComponent<UCActionComponent>(this, &Action, "Action");
 
 	bUseControllerRotationYaw = false;
 
@@ -67,15 +69,15 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalLook", this, &ACPlayer::OnVerticalLook);
 	PlayerInputComponent->BindAction("Avoid", EInputEvent::IE_Pressed, this, &ACPlayer::OnAvoid);
-
+	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnOneHand);
 }
 
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch(InNewType)
 	{
-	case EStateType::Roll:		Begin_Roll(); break;
-	case EStateType::Backstep:	Begin_Backstep(); break;
+		case EStateType::Roll:		Begin_Roll(); break;
+		case EStateType::Backstep:	Begin_Backstep(); break;
 	}
 
 }
@@ -148,16 +150,34 @@ void ACPlayer::Begin_Backstep()
 
 void ACPlayer::End_Roll()
 {
+	if(Action->IsUnarmedMode() == false)
+	{
+		bUseControllerRotationYaw = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
+
 	State->SetIdleMode();
 
 }
 
 void ACPlayer::End_Backstep()
 {
-	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	if (Action->IsUnarmedMode() == false)
+	{
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
 
 	State->SetIdleMode();
+
+}
+
+void ACPlayer::OnOneHand()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetOneHandMode();
+
+
 
 }
 
