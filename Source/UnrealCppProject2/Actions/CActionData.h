@@ -12,10 +12,13 @@ struct FEquipmentData
 public:
 	UPROPERTY(EditAnywhere)
 		class UAnimMontage* AnimMontage;
+
 	UPROPERTY(EditAnywhere)
 		float PlayRatio = 1.0f;
+
 	UPROPERTY(EditAnywhere)
 		FName StartSection;
+
 	UPROPERTY(EditAnywhere)
 		bool bCanMove = true;
 };
@@ -27,11 +30,15 @@ class UNREALCPPPROJECT2_API UCActionData : public UDataAsset
 
 private:
 	class ACEquipment* Equipment;
+	class ACAttachment* Attachment;
 
 public:
 	void BeginPlay(class ACharacter* InOwnerCharacter);
 
 public:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class ACAttachment> AttachmentClass;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TSubclassOf<class ACEquipment> EquipmentClass;
 
@@ -40,5 +47,4 @@ public:
 
 public:
 	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
-	
 };
