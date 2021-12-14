@@ -34,7 +34,7 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 
 	// : Do Action
 	DoAction = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACDoAction>
-		(EquipmentClass, transform, InOwnerCharacter);
+		(DoActionClass, transform, InOwnerCharacter);
 
 	DoAction->AttachToComponent(InOwnerCharacter->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
