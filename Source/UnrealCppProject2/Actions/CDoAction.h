@@ -38,4 +38,6 @@ protected:
 	TArray<FDoActionData> Datas;
 public:
 	FORCEINLINE void SetDatas(TArray<FDoActionData> InDatas) { Datas = InDatas; }
+
+
 };
