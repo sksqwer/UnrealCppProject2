@@ -15,8 +15,6 @@ void UCActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CLog::Log("BeginPlay");
-
 	ACharacter* character = Cast<ACharacter>(GetOwner());
 	for(int32 i = 0; i < (int32)EActionType::Max; i++)
 	{
@@ -57,14 +55,12 @@ void UCActionComponent::SetMode(EActionType InType)
 	}
 
 	// : equip weapon
-	CLog::Log("SetMode1");
 	ACEquipment* equipment = Datas[(int32)InType]->GetEquipment();
 	CheckNull(equipment);
 	 
 	equipment->Equip();
 
 	ChangeType(InType);
-	CLog::Log("SetMode2");
 
 }
 
@@ -76,7 +72,6 @@ void UCActionComponent::SetUnarmedMode()
 		CheckNull(equipment);
 
 		equipment->Unequip();
-
 	}
 
 	// >> :
@@ -86,12 +81,10 @@ void UCActionComponent::SetUnarmedMode()
 	// << :
 
 	ChangeType(EActionType::Unarmed);
-
 }
 
 void UCActionComponent::SetOneHandMode()
 {
-	CLog::Log("SetOneHandMode");
 	SetMode(EActionType::OneHand);
 }
 

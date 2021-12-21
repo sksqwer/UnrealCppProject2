@@ -194,10 +194,8 @@ void ACPlayer::End_Backstep()
 
 void ACPlayer::OnOneHand()
 {
-	CLog::Log("OnOneHand1");
 	CheckFalse(State->IsIdleMode());
 	Action->SetOneHandMode();
-	CLog::Log("OnOneHand2");
 }
 
 void ACPlayer::OnDoAction()

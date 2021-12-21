@@ -16,7 +16,7 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetSkeletalMesh(mesh);
 
 	TSubclassOf<UAnimInstance> animInstance;
-	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'");
+	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Enemy/ABP_CEnemy.ABP_CEnemy_C'");
 	GetMesh()->SetAnimInstanceClass(animInstance);
 	
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
