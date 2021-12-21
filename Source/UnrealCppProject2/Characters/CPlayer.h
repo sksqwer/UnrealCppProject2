@@ -1,13 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Component/CStateComponent.h"
 #include "GameFramework/Character.h"
+#include "Component/CStateComponent.h"
+#include "Characters/ICharacter.h"
 #include "CPlayer.generated.h"
 
 
 UCLASS()
-class UNREALCPPPROJECT2_API ACPlayer : public ACharacter
+class UNREALCPPPROJECT2_API ACPlayer : public ACharacter, public IICharacter
 {
 	GENERATED_BODY()
 
@@ -65,5 +66,14 @@ public:
 private:
 	void OnOneHand();
 	void OnDoAction();
+
+private:
+	class UMaterialInstanceDynamic* BodyMaterial;
+	class UMaterialInstanceDynamic* LogoMaterial;
+
+public:
+	virtual void ChangeColor(FLinearColor InColor) override;
+
+
 
 };

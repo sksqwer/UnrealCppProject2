@@ -51,10 +51,12 @@ protected:
 		class UCStatusComponent* Status;
 
 private:
-	FEquipmentData Data;
+	FEquipmentData			Data;
+	FLinearColor			Color;
 
 public:
 	FORCEINLINE void SetData(FEquipmentData InData) { Data = InData; }
+	FORCEINLINE void SetColor(FLinearColor InColor) { Color = InColor; }
 
 public:
 	UPROPERTY(BlueprintAssignable)

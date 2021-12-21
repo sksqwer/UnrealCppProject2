@@ -1,14 +1,16 @@
 #include "CPlayer.h"
-#include "Global.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "Components/InputComponent.h"
-#include "Component/COptionComponent.h"
-#include "Component/CStatusComponent.h"
-#include "Component/CMontagesComponent.h"
-#include "Component/CActionComponent.h"
+	#include "Global.h"
+	#include "Camera/CameraComponent.h"
+	#include "GameFramework/SpringArmComponent.h"
+	#include "GameFramework/CharacterMovementComponent.h"
+	#include "Components/SkeletalMeshComponent.h"
+	#include "Components/InputComponent.h"
+	#include "Component/COptionComponent.h"
+	#include "Component/CStatusComponent.h"
+	#include "Component/CMontagesComponent.h"
+	#include "Component/CActionComponent.h"
+	#include "Materials/MaterialInstanceConstant.h"
+	#include "Materials/MaterialInstanceDynamic.h"
 
 ACPlayer::ACPlayer()
 {
@@ -34,7 +36,7 @@ ACPlayer::ACPlayer()
 	GetMesh()->SetSkeletalMesh(mesh);
 
 	TSubclassOf<UAnimInstance> animInstance;
-	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'");
+	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Enemy/ABP_CEnemy.ABP_CEnemy_C'");
 	GetMesh()->SetAnimInstanceClass(animInstance);
 
 	SpringArm->TargetArmLength = 750.0f;
@@ -52,6 +54,23 @@ void ACPlayer::BeginPlay()
 
 	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
 
+	UMaterialInstanceConstant* body;
+	UMaterialInstanceConstant* logo;
+
+	// >> :
+
+	CHelpers::GetAssetDynamic<UMaterialInstanceConstant>(&body, "MaterialInstanceConstant'/Game/Materials/M_UE4Man_Body_Inst.M_UE4Man_Body_Inst'");
+	CHelpers::GetAssetDynamic<UMaterialInstanceConstant>(&logo, "MaterialInstanceConstant'/Game/Materials/M_UE4Man_ChestLogo_Inst.M_UE4Man_ChestLogo_Inst'");
+
+	BodyMaterial = UMaterialInstanceDynamic::Create(body, this);
+	LogoMaterial = UMaterialInstanceDynamic::Create(logo, this);
+
+	GetMesh()->SetMaterial(0, BodyMaterial);
+	GetMesh()->SetMaterial(1, LogoMaterial);
+
+	Action->SetUnarmedMode();
+
+	// << :
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -177,13 +196,16 @@ void ACPlayer::OnOneHand()
 {
 	CheckFalse(State->IsIdleMode());
 	Action->SetOneHandMode();
-
-
-
 }
 
 void ACPlayer::OnDoAction()
 {
 	Action->DoAction();
+}
+
+void ACPlayer::ChangeColor(FLinearColor InColor)
+{
+	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
+	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);
 }
 

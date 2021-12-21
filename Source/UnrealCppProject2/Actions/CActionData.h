@@ -21,6 +21,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		bool bCanMove = true;
+
+	UPROPERTY(EditAnywhere)
+		bool bPawnControl = true;
 };
 
 USTRUCT(BlueprintType)
@@ -75,6 +78,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FDoActionData> DoActionDatas;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FLinearColor EquipmentColor;
 
 public:
 	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }

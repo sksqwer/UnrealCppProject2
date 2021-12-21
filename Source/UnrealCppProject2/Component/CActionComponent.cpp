@@ -53,8 +53,6 @@ void UCActionComponent::SetMode(EActionType InType)
 	}
 
 	// : equip weapon
-
-
 	ACEquipment* equipment = Datas[(int32)InType]->GetEquipment();
 	CheckNull(equipment);
 	 
@@ -74,6 +72,12 @@ void UCActionComponent::SetUnarmedMode()
 		equipment->Unequip();
 
 	}
+
+	// >> :
+	ACEquipment* equipment = Datas[(int32)EActionType::Unarmed]->GetEquipment();
+	CheckNull(equipment);
+	equipment->Equip();
+	// << :
 
 	ChangeType(EActionType::Unarmed);
 
