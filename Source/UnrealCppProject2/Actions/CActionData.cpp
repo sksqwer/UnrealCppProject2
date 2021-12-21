@@ -34,7 +34,7 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		Equipment->SetColor(EquipmentColor);
 
 		UGameplayStatics::FinishSpawningActor(Equipment, transform);
-		if (AttachmentClass)
+		if (!!AttachmentClass)
 		{
 			Equipment->OnEquipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnEquip);
 			Equipment->OnUnequipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnUnEquip);
