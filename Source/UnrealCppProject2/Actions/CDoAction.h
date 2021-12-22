@@ -39,5 +39,19 @@ protected:
 public:
 	FORCEINLINE void SetDatas(TArray<FDoActionData> InDatas) { Datas = InDatas; }
 
+public:
+	UFUNCTION()
+		virtual void OnAttachmentBeginOverlap(
+			class ACharacter* InAttacker,
+			class AActor* InAttackCauser,
+			class ACharacter* InOtherCharacter)
+	{}
 
+
+	UFUNCTION()
+		virtual void OnAttachmentEndOverlap(
+			class ACharacter* InAttacker,
+			class AActor* InAttackCauser,
+			class ACharacter* InOtherCharacter)
+	{}
 };

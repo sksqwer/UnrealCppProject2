@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Actions/CDoAction.h"
+#include "Utilities/CLog.h"
 #include "CDoAction_Melee.generated.h"
 
 UCLASS()
@@ -21,7 +22,16 @@ private:
 	int32 Index;
 
 public:
-	FORCEINLINE void EnableCombo() { bEnable = true; }
-	FORCEINLINE void DisableCombo() { bEnable = false; }
-	
+	FORCEINLINE void EnableCombo() { CLog::Log("Combo!"); bEnable = true; }
+	FORCEINLINE void DisableCombo() { CLog::Log("ComboX"); bEnable = false; }
+
+	virtual void OnAttachmentBeginOverlap(
+		class ACharacter* InAttacker,
+		class AActor* InAttackCauser,
+		class ACharacter* InOtherCharacter) override;
+
+	virtual void OnAttachmentEndOverlap(
+		class ACharacter* InAttacker,
+		class AActor* InAttackCauser,
+		class ACharacter* InOtherCharacter) override;
 };

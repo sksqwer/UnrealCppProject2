@@ -19,6 +19,9 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Speed")
+		float MaxHealth = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Speed")
 		float WalkSpeed = 200.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Speed")
@@ -33,8 +36,12 @@ public:
 	FORCEINLINE float GetSprintSpeed() { return SprintSpeed; }
 	FORCEINLINE bool CanMove() { return bCanMove; }
 
+	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
+	FORCEINLINE float GetHealth() { return Health; }
+
 private:
 	bool bCanMove = true;
+	float Health = 100;
 
 public:
 	void SetMove();

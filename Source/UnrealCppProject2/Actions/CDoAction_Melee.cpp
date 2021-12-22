@@ -31,7 +31,8 @@ void ACDoAction_Melee::Begin_DoAction()
 {
 	Super::Begin_DoAction();
 
-	CheckNull(bExist)
+	CheckNull(bExist);
+	bExist = false;
 
 	OwnerCharacter->StopAnimMontage();
 
@@ -53,4 +54,26 @@ void ACDoAction_Melee::End_DoAction()
 	Status->SetMove();
 
 	Index = 0;
+}
+
+void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* InAttackCauser,
+	ACharacter* InOtherCharacter)
+{
+	Super::OnAttachmentBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
+	
+
+	CheckNull(InOtherCharacter);
+
+	CLog::Log(InOtherCharacter->GetName());
+
+	FDamageEvent e;
+	InOtherCharacter->TakeDamage(Datas[Index].Power, e, OwnerCharacter->GetController(), this);
+
+}
+
+void ACDoAction_Melee::OnAttachmentEndOverlap(ACharacter* InAttacker, AActor* InAttackCauser,
+	ACharacter* InOtherCharacter)
+{
+	Super::OnAttachmentEndOverlap(InAttacker, InAttackCauser, InOtherCharacter);
+	
 }
