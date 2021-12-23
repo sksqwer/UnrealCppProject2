@@ -138,6 +138,9 @@ void ACEnemy::Hitted()
 	Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject())->Update(Status->GetHealth(), Status->GetMaxHealth());
 	DamageValue = 0.0f;
 
+	Status->SetStop();
+	Montages->PlayHitted();
+
 	// >> :
 	FVector start = GetActorLocation();
 	FVector target = DamageInstigator->GetPawn()->GetActorLocation();

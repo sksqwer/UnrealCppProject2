@@ -61,6 +61,9 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		{
 			Attachment->OnAttachmentBeginOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentBeginOverlap);
 			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentEndOverlap);
+
+			Attachment->OnAttachmentCollision.AddDynamic(DoAction, &ACDoAction::OnAttachmentCollision);
+			Attachment->OnAttachmentCollision.AddDynamic(DoAction, &ACDoAction::OffAttachmentCollision);
 		}
 	}
 	

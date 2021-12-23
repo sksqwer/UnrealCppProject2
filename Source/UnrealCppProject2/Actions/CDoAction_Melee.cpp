@@ -59,9 +59,17 @@ void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* 
 	ACharacter* InOtherCharacter)
 {
 	Super::OnAttachmentBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
-
-
+	
 	CheckNull(InOtherCharacter);
+
+	for(const ACharacter* other : HittedCharacters)
+	{
+		if (InOtherCharacter == other)
+			return;
+	}
+
+	HittedCharacters.Add(InOtherCharacter);
+
 
 	CLog::Log(InOtherCharacter->GetName());
 
@@ -75,4 +83,15 @@ void ACDoAction_Melee::OnAttachmentEndOverlap(ACharacter* InAttacker, AActor* In
 {
 	Super::OnAttachmentEndOverlap(InAttacker, InAttackCauser, InOtherCharacter);
 
+}
+
+void ACDoAction_Melee::OnAttachmentCollision()
+{
+	Super::OnAttachmentCollision();
+}
+
+void ACDoAction_Melee::OffAttachmentCollision()
+{
+	Super::OffAttachmentCollision();
+	HittedCharacters.Empty();
 }

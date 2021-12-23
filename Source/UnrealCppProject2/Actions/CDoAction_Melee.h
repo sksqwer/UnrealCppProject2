@@ -5,6 +5,7 @@
 #include "Utilities/CLog.h"
 #include "CDoAction_Melee.generated.h"
 
+
 UCLASS()
 class UNREALCPPPROJECT2_API ACDoAction_Melee : public ACDoAction
 {
@@ -34,5 +35,11 @@ public:
 		class ACharacter* InAttacker,
 		class AActor* InAttackCauser,
 		class ACharacter* InOtherCharacter) override;
+
+	virtual void OnAttachmentCollision() override;
+
+	virtual void OffAttachmentCollision() override;
+private:
+	TArray<class ACharacter*> HittedCharacters;
 
 };
