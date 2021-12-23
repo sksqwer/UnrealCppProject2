@@ -18,9 +18,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Speed")
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
 		float MaxHealth = 100.0f;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Speed")
 		float WalkSpeed = 200.0f;
 
@@ -35,9 +34,9 @@ public:
 	FORCEINLINE float GetRunSpeed() { return RunSpeed; }
 	FORCEINLINE float GetSprintSpeed() { return SprintSpeed; }
 	FORCEINLINE bool CanMove() { return bCanMove; }
-
 	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
 	FORCEINLINE float GetHealth() { return Health; }
+
 
 private:
 	bool bCanMove = true;
@@ -46,4 +45,7 @@ private:
 public:
 	void SetMove();
 	void SetStop();
+
+	void AddHealth(float InAmount);
+	void SubHealth(float InAmount);
 };

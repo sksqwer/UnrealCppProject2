@@ -13,6 +13,7 @@ enum class EStateType : uint8
 	Equip,
 	//Unequip,
 	Action,
+	Hitted,
 	Max
 };
 
@@ -49,6 +50,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsActionMode() { return Type == EStateType::Action; }
 
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsHittedMode() { return Type == EStateType::Hitted; }
+
 public:
 	UPROPERTY(BlueprintAssignable)
 		FStateTypeChanged OnStateTypeChanged;
@@ -63,5 +67,6 @@ public:
 
 	void SetEquipMode();
 	void SetActionMode();
+	void SetHittedMode();
 		
 };

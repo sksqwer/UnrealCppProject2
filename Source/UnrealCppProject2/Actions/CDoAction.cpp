@@ -18,7 +18,6 @@ void ACDoAction::BeginPlay()
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 
-
 	Super::BeginPlay();
 }
 

@@ -55,12 +55,11 @@ void ACDoAction_Melee::End_DoAction()
 
 	Index = 0;
 }
-
 void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* InAttackCauser,
 	ACharacter* InOtherCharacter)
 {
 	Super::OnAttachmentBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
-	
+
 
 	CheckNull(InOtherCharacter);
 
@@ -75,5 +74,5 @@ void ACDoAction_Melee::OnAttachmentEndOverlap(ACharacter* InAttacker, AActor* In
 	ACharacter* InOtherCharacter)
 {
 	Super::OnAttachmentEndOverlap(InAttacker, InAttackCauser, InOtherCharacter);
-	
+
 }

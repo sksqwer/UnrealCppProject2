@@ -18,8 +18,8 @@ UCLASS()
 class UNREALCPPPROJECT2_API ACAttachment : public AActor
 {
 	GENERATED_BODY()
-
-public:
+	
+public:	
 	ACAttachment();
 
 protected:

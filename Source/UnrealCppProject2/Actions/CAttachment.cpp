@@ -10,6 +10,7 @@
 ACAttachment::ACAttachment()
 {
 	CHelpers::CreateComponent<USceneComponent>(this, &Scene, "Scene");
+	
 }
 
 void ACAttachment::BeginPlay()
@@ -19,11 +20,12 @@ void ACAttachment::BeginPlay()
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 
 	GetComponents<UShapeComponent>(ShapeComponents);
-	for(UShapeComponent* component : ShapeComponents)
+	for (UShapeComponent* component : ShapeComponents)
 	{
 		component->OnComponentBeginOverlap.AddDynamic(this, &ACAttachment::OnComponentBeginOverlap);
 		component->OnComponentEndOverlap.AddDynamic(this, &ACAttachment::OnComponentEndOverlap);
 	}
+
 
 	Super::BeginPlay();
 	
@@ -36,13 +38,14 @@ void ACAttachment::AttachTo(FName InSocketName)
 		InSocketName);
 }
 
+
 void ACAttachment::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	CheckTrue(OwnerCharacter == OtherActor);
 	CheckTrue(OtherActor->GetClass() == OwnerCharacter->GetClass());
 
-	if(OnAttachmentBeginOverlap.IsBound())
+	if (OnAttachmentBeginOverlap.IsBound())
 	{
 		OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, Cast<ACharacter>(OtherActor));
 	}

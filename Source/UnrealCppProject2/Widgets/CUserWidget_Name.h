@@ -12,5 +12,5 @@ class UNREALCPPPROJECT2_API UCUserWidget_Name : public UUserWidget
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void SetNameText(const FString& InName);
-	
+
 };

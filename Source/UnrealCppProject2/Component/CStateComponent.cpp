@@ -50,3 +50,8 @@ void UCStateComponent::SetActionMode()
 {
 	ChangeType(EStateType::Action);
 }
+
+void UCStateComponent::SetHittedMode()
+{
+	ChangeType(EStateType::Hitted);
+}

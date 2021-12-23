@@ -34,4 +34,5 @@ public:
 		class ACharacter* InAttacker,
 		class AActor* InAttackCauser,
 		class ACharacter* InOtherCharacter) override;
+
 };

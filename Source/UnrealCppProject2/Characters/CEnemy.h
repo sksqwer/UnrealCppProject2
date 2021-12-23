@@ -26,9 +26,12 @@ private:
 
 public:
 	virtual void ChangeColor(FLinearColor InColor) override;
-
 	float TakeDamage(float Damage, FDamageEvent const& DamageEvent,
 		AController* EventInstigator, AActor* DamageCauser) override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Hitted")
+		float LaunchAmount = 100.0f;
 
 private:
 	UPROPERTY(VisibleDefaultsOnly)
@@ -53,5 +56,15 @@ protected:
 private:
 	UFUNCTION()
 		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+
+	UFUNCTION()
+		void RestoreColor();
+
+private:
+	class AController* DamageInstigator;
+	float DamageValue;
+
+private:
+	void Hitted();
 
 };
