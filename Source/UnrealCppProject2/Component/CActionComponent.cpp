@@ -21,7 +21,10 @@ void UCActionComponent::BeginPlay()
 		if (!!Datas[i])
 			Datas[i]->BeginPlay(character);
 		else
+		{
+			CLog::Log(character->GetName());
 			CLog::Log(i);
+		}
 	}
 	
 	
@@ -84,6 +87,11 @@ void UCActionComponent::SetUnarmedMode()
 	// << :
 
 	ChangeType(EActionType::Unarmed);
+}
+
+void UCActionComponent::SetFistMode()
+{
+	SetMode(EActionType::Fist);
 }
 
 void UCActionComponent::SetOneHandMode()

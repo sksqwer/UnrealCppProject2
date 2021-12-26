@@ -65,6 +65,8 @@ public:
 
 private:
 	void OnOneHand();
+	void OnTwoHand();
+	void OnFist();
 	void OnDoAction();
 
 private:

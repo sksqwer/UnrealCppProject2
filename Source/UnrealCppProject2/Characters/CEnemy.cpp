@@ -127,7 +127,8 @@ void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 void ACEnemy::RestoreColor()
 {
 	FLinearColor color = Action->GetCurrent()->GetEquipmentColor();
-	ChangeColor(color);
+	if(Action->GetCurrent())
+		ChangeColor(color);
 }
 
 void ACEnemy::Hitted()
