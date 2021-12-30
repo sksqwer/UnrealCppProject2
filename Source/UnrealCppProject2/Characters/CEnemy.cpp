@@ -9,6 +9,7 @@
 #include "Component/CStatusComponent.h"
 #include "Component/CMontagesComponent.h"
 #include "Component/CActionComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Name.h"
 #include "Widgets/CUserWidget_Health.h"
@@ -121,6 +122,8 @@ void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 	switch (InNewType)
 	{
 	case EStateType::Hitted: Hitted(); break;
+
+	case EStateType::Dead:	Dead();	break;
 	}
 }
 
@@ -140,6 +143,12 @@ void ACEnemy::Hitted()
 	DamageValue = 0.0f;
 
 	Status->SetStop();
+
+	if (Status->GetHealth() <= 0.0f)
+	{
+		State->SetDeadMode();
+		return;
+	}
 	Montages->PlayHitted();
 
 	// >> :
@@ -158,4 +167,21 @@ void ACEnemy::Hitted()
 
 	ChangeColor(FLinearColor(1, 0, 0, 1));
 	UKismetSystemLibrary::K2_SetTimer(this, "RestoreColor", 0.1f, false);
+}
+
+void ACEnemy::Dead()
+{
+	CheckFalse(State->IsDeadMode());
+	Montages->PlayDead();
+}
+
+void ACEnemy::Begin_Dead()
+{
+	Action->OffAllCollision();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ACEnemy::End_Dead()
+{
+	Destroy();
 }

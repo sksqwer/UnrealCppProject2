@@ -66,5 +66,10 @@ private:
 
 private:
 	void Hitted();
+	void Dead();
+
+public:
+	virtual void Begin_Dead() override;
+	virtual void End_Dead() override;
 
 };

@@ -1,16 +1,18 @@
 #include "CPlayer.h"
-	#include "Global.h"
-	#include "Camera/CameraComponent.h"
-	#include "GameFramework/SpringArmComponent.h"
-	#include "GameFramework/CharacterMovementComponent.h"
-	#include "Components/SkeletalMeshComponent.h"
-	#include "Components/InputComponent.h"
-	#include "Component/COptionComponent.h"
-	#include "Component/CStatusComponent.h"
-	#include "Component/CMontagesComponent.h"
-	#include "Component/CActionComponent.h"
-	#include "Materials/MaterialInstanceConstant.h"
-	#include "Materials/MaterialInstanceDynamic.h"
+#include "Global.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Components/InputComponent.h"
+#include "Component/COptionComponent.h"
+#include "Component/CStatusComponent.h"
+#include "Component/CMontagesComponent.h"
+#include "Component/CActionComponent.h"
+#include "Component/CTargetComponent.h"
+#include "Actions/CEquipment.h"
+#include "Materials/MaterialInstanceConstant.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 ACPlayer::ACPlayer()
 {
@@ -23,6 +25,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
 	CHelpers::CreateActorComponent<UCActionComponent>(this, &Action, "Action");
+	CHelpers::CreateActorComponent<UCTargetComponent>(this, &Target, "Target");
 
 	bUseControllerRotationYaw = false;
 
@@ -36,8 +39,8 @@ ACPlayer::ACPlayer()
 	GetMesh()->SetSkeletalMesh(mesh);
 
 	TSubclassOf<UAnimInstance> animInstance;
-	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Enemy/ABP_CEnemy.ABP_CEnemy_C'");
-	GetMesh()->SetAnimInstanceClass(animInstance);
+	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'");
+	GetMesh()->SetAnimInstanceClass(animInstance);	
 
 	SpringArm->TargetArmLength = 750.0f;
 	SpringArm->bDoCollisionTest = false;
@@ -69,14 +72,13 @@ void ACPlayer::BeginPlay()
 	GetMesh()->SetMaterial(1, LogoMaterial);
 
 	Action->SetUnarmedMode();
-
-	// << :
+	
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//CLog::Log(Action->GetCurrent());
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -92,14 +94,22 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnOneHand);
 	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoAction);
+	PlayerInputComponent->BindAction("Warp", EInputEvent::IE_Pressed, this, &ACPlayer::OnWarp);
+	PlayerInputComponent->BindAction("Target", EInputEvent::IE_Pressed, this, &ACPlayer::OnTarget);
+	PlayerInputComponent->BindAction("TargetLeft", EInputEvent::IE_Pressed, this, &ACPlayer::OnTargetLeft);
+	PlayerInputComponent->BindAction("TargetRight", EInputEvent::IE_Pressed, this, &ACPlayer::OnTargetRight);
+	PlayerInputComponent->BindAction("FireStorm", EInputEvent::IE_Pressed, this, &ACPlayer::OnFireStorm);
+	PlayerInputComponent->BindAction("IceBall", EInputEvent::IE_Pressed, this, &ACPlayer::OnIceBall);
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
 }
 
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
-	switch(InNewType)
+	switch (InNewType)
 	{
-		case EStateType::Roll:		Begin_Roll(); break;
-		case EStateType::Backstep:	Begin_Backstep(); break;
+	case EStateType::Roll:		Begin_Roll(); break;
+	case EStateType::Backstep:	Begin_Backstep(); break;
 	}
 
 }
@@ -172,7 +182,7 @@ void ACPlayer::Begin_Backstep()
 
 void ACPlayer::End_Roll()
 {
-	if(Action->IsUnarmedMode() == false)
+	if (Action->IsUnarmedMode() == false)
 	{
 		bUseControllerRotationYaw = true;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -212,9 +222,52 @@ void ACPlayer::OnFist()
 	Action->SetFistMode();
 }
 
+void ACPlayer::OnWarp()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetWarpMode();
+}
+
 void ACPlayer::OnDoAction()
 {
 	Action->DoAction();
+}
+
+void ACPlayer::OnTarget()
+{
+	Target->ToggleTarget();
+}
+
+void ACPlayer::OnTargetLeft()
+{
+	Target->ChangeTargetLeft();
+}
+
+void ACPlayer::OnTargetRight()
+{
+	Target->ChangeTargetRight();
+}
+
+void ACPlayer::OnFireStorm()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetFireStromMode();
+}
+
+void ACPlayer::OnIceBall()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetIceBallMode();
+}
+
+void ACPlayer::OnAim()
+{
+	Action->DoAim(true);
+}
+
+void ACPlayer::OffAim()
+{
+	Action->DoAim(false);
 }
 
 void ACPlayer::ChangeColor(FLinearColor InColor)

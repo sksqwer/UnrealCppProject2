@@ -55,14 +55,22 @@ void ACEquipment::Begin_Equip_Implementation()
 
 void ACEquipment::End_Equip_Implementation()
 {
+	bEquipped = true;
 	State->SetIdleMode();
 }
 
 void ACEquipment::Unequip_Implementation()
 {
+	bEquipped = false;
 	if (OnUnequipmentDelegate.IsBound())
 		OnUnequipmentDelegate.Broadcast();
 
 	OwnerCharacter->bUseControllerRotationYaw = false;
 	OwnerCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// >> :
+	IICharacter* character = Cast<IICharacter>(OwnerCharacter);
+	CheckNull(character);
+
+	character->ChangeColor(Color);
 }
