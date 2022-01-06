@@ -1,4 +1,6 @@
 #include "CAim.h"
+
+#include "CHUD.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -16,6 +18,7 @@ void UCAim::BeginPlay(ACharacter* InCharacter)
 	SpringArm = CHelpers::GetComponent<USpringArmComponent>(OwnerCharacter);
 	Camera = CHelpers::GetComponent<UCameraComponent>(OwnerCharacter);
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+	Hud = OwnerCharacter->GetWorld()->GetFirstPlayerController()->GetHUD<ACHUD>();
 
 	TimelineFloat.BindUFunction(this, "Zooming");
 	Timeline.AddInterpFloat(Curve, TimelineFloat);
@@ -42,6 +45,7 @@ void UCAim::OnAim()
 	CLog::Print("OnAim2");
 
 	bInZoom = true;
+	Hud->SetDraw();
 
 	SpringArm->TargetArmLength = 100.0f;
 	SpringArm->SocketOffset = FVector(0, 30, 10.0f);
@@ -59,6 +63,7 @@ void UCAim::OffAim()
 	CLog::Print("OffAim2");
 
 	bInZoom = false;
+	Hud->SetNotDraw();
 
 	SpringArm->TargetArmLength = 750.0f;
 	SpringArm->SocketOffset = FVector(0, 0, 140.0);
